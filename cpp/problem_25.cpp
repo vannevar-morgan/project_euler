@@ -16,8 +16,8 @@ The 12th term, F12 = 144, is the first term to contain three digits.
 
 What is the index of the first term in the Fibonacci sequence to contain 1000 digits?
  */
-
-cpp_int get_fib_n_digits(int& fib_count, const int digits);
+typedef unsigned int uint;
+cpp_int get_fib_n_digits(int& fib_count, const uint digits);
 
 
 int main(int argc, char* argv[]){
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-cpp_int get_fib_n_digits(int& fib_count, const int digits = 1000){
+cpp_int get_fib_n_digits(int& fib_count, const uint digits = 1000){
   cpp_int fib_1 = 1;
   cpp_int fib_2 = 1;
   cpp_int fib_n = 0;

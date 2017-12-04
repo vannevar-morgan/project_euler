@@ -23,10 +23,15 @@ What is the index of the first term in the Fibonacci sequence to contain 1000 di
 
 
 /*
-you can increase the value of FIB_MAX to pre-compute a smaller or larger fibonacci table
+the naive version of this (problem_25.cpp) checks if fib_n.str().size() >= digits, for each fib(n)
+which is an expensive operation (worsening as digits increase).
+
+this version uses a binary search to find the nth fibonacci with the given number of digits.
+
+you can increase (or decrease for a smaller table) the value of FIB_MAX to compute a larger fibonacci table
 but consider that the fibonacci sequence increases exponentially.
-increasing FIB_MAX will be exponentially more expensive with increasing fib(n)
-(it will require lots of memory to store the table)
+increasing FIB_MAX will be more expensive with increasing fib(n)
+(large fib(n) have > thousands of digits, it will require lots of memory to store the table)
 
 alternatively you could implement a different strategy for computing fibonacci numbers
 passing fib(n-1), fib(n-2) and computing smaller tables as needed
@@ -37,15 +42,16 @@ doubling n until number of digits exceeds specified, then halving the range unti
 with specified number of digits is found.
 at each doubling, save the fib(n) and fib(n+1) so the sequence can be recomputed from that point
 in the sequence rather than recomputing the entire sequence.
-additionally, as you compute fib(2n), save the fib(1.5n) and fib(1.5n + 1), the mid, so the sequence
+additionally, as you compute fib(2n), save the fib(1.5n) and fib(1.5n + 1) (the mid), so the sequence
 can be recomputed here without first needing to recompute mid.
 */
-const static int FIB_MAX = 100000; // fibonacci table size, max number of fibonacci elements to pre-compute
+typedef unsigned int uint;
+const static uint FIB_MAX = 100000; // fibonacci table size, max number of fibonacci elements to pre-compute
 
 typedef map<int, cpp_int>::size_type map_sz;
 pair<int, cpp_int> get_fib_n_digits(const int digits = 1000);
-pair<int, cpp_int> bin_find_fib_map(map<int, cpp_int>& fib_map, const int digits, const map_sz range_beg = 0, const map_sz range_end = 0, const bool range_indicated = false);
-map<int, cpp_int> calc_fib(const int fib_n = FIB_MAX);
+pair<int, cpp_int> bin_find_fib_map(map<int, cpp_int>& fib_map, const uint digits, const map_sz range_beg = 0, const map_sz range_end = 0, const bool range_indicated = false);
+map<int, cpp_int> calc_fib(const uint fib_n = FIB_MAX);
 
 
 void init_logging(){
@@ -97,7 +103,7 @@ pair<int, cpp_int> get_fib_n_digits(const int digits){
   return bin_find_fib_map(fib_map, digits);
 }
 
-pair<int, cpp_int> bin_find_fib_map(map<int, cpp_int>& fib_map, const int digits, const map_sz range_beg, const map_sz range_end, const bool range_indicated){
+pair<int, cpp_int> bin_find_fib_map(map<int, cpp_int>& fib_map, const uint digits, const map_sz range_beg, const map_sz range_end, const bool range_indicated){
   //
   // perform binary find on fib_map to find the first element with num digits >= digits
   //
@@ -105,7 +111,7 @@ pair<int, cpp_int> bin_find_fib_map(map<int, cpp_int>& fib_map, const int digits
   if(fib_map.empty()){
     return ret;
   }
-  int fibn_digits = 0;
+  uint fibn_digits = 0;
   
   map_sz beg = 0;
   map_sz end = fib_map.size();
@@ -137,7 +143,7 @@ pair<int, cpp_int> bin_find_fib_map(map<int, cpp_int>& fib_map, const int digits
   return ret;
 }
 
-map<int, cpp_int> calc_fib(const int n){
+map<int, cpp_int> calc_fib(const uint n){
   //
   // return a table of fibonacci numbers [fib(1), fib(n)]
   // if n > FIB_MAX then the table returned is [fib(1), fib(FIB_MAX)]
