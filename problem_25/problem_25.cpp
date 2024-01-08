@@ -6,6 +6,8 @@ using namespace std;
 using namespace boost::multiprecision;
 
 /*
+Project Euler, Problem 25
+
 PROBLEM STATEMENT:
 
 The Fibonacci sequence is defined by the recurrence relation:
@@ -15,7 +17,8 @@ The Fibonacci sequence is defined by the recurrence relation:
 The 12th term, F12 = 144, is the first term to contain three digits.
 
 What is the index of the first term in the Fibonacci sequence to contain 1000 digits?
- */
+*/
+
 typedef unsigned int uint;
 cpp_int get_fib_n_digits(int& fib_count, const uint digits);
 
